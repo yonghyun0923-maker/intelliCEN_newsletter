@@ -1,0 +1,15 @@
+{
+  "name": "intellicen-newsletter",
+  "version": "1.0.0",
+  "description": "intelliCEN PMS 뉴스레터 관리 시스템",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "juice": "^11.0.0",
+    "markdown-it": "^14.1.0"
+  }
+}
