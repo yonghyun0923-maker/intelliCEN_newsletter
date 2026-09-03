@@ -1,0 +1,32 @@
+name: build-newsletter
+on:
+  push:
+    branches: [main]
+    paths: ['issues/**', 'template/**', 'scripts/**', 'package.json', 'package-lock.json']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - name: Commit built docs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/
+          if git diff --staged --quiet; then
+            echo "변경 없음"
+          else
+            git commit -m "build: docs 재생성 [skip ci]"
+            git push
+          fi
