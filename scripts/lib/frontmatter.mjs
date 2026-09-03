@@ -20,6 +20,10 @@ export function parseFrontmatter(raw) {
   if (!DATE_RE.test(dateStr)) {
     throw new Error('frontmatter: date 는 YYYY-MM-DD 형식이어야 합니다');
   }
+  const roundTrip = new Date(`${dateStr}T00:00:00Z`);
+  if (Number.isNaN(roundTrip.getTime()) || roundTrip.toISOString().slice(0, 10) !== dateStr) {
+    throw new Error('frontmatter: date 는 유효한 날짜여야 합니다');
+  }
   const links = Array.isArray(data.links)
     ? data.links.map((l) => ({ label: l.label, url: l.url }))
     : [];

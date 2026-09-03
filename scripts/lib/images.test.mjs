@@ -13,7 +13,7 @@ test('상대 이미지 경로를 절대 URL 로 치환한다', () => {
 test('홑따옴표 src 도 치환한다', () => {
   const html = `<img src='images/a.jpg'>`;
   const out = rewriteImageUrls(html, BASE);
-  assert.match(out, new RegExp(`${BASE.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')}/images/a\\.jpg`));
+  assert.equal(out, `<img src='${BASE}/images/a.jpg'>`);
 });
 
 test('이미 절대 URL 인 이미지는 그대로 둔다', () => {

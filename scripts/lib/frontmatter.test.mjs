@@ -37,3 +37,8 @@ test('date 형식 오류 시 에러', () => {
   const raw = `---\ntitle: t\ndate: 2026/01/01\nsummary: s\n---\n본문`;
   assert.throws(() => parseFrontmatter(raw), /date/);
 });
+
+test('존재하지 않는 달력 날짜(2026-13-45) 시 에러', () => {
+  const raw = `---\ntitle: t\ndate: "2026-13-45"\nsummary: s\n---\n본문`;
+  assert.throws(() => parseFrontmatter(raw), /date/);
+});

@@ -506,28 +506,30 @@ function renderLinks(links) {
 
 export function renderEmail({ meta, bodyHtml, issueUrl, template }) {
   return template
-    .replaceAll('{{TITLE}}', escapeHtml(meta.title))
-    .replaceAll('{{DATE}}', escapeHtml(meta.date))
-    .replaceAll('{{WEBVIEW_URL}}', escapeHtml(issueUrl))
-    .replaceAll('{{BODY}}', bodyHtml)
-    .replaceAll('{{LINKS}}', renderLinks(meta.links));
+    .replaceAll('{{TITLE}}', () => escapeHtml(meta.title))
+    .replaceAll('{{DATE}}', () => escapeHtml(meta.date))
+    .replaceAll('{{WEBVIEW_URL}}', () => escapeHtml(issueUrl))
+    .replaceAll('{{BODY}}', () => bodyHtml)
+    .replaceAll('{{LINKS}}', () => renderLinks(meta.links));
 }
 
 export function renderSitePage({ emailHtmlInlined, meta, rawEmailSource }) {
   const srcJson = JSON.stringify(rawEmailSource);
+  const tableMatch = emailHtmlInlined.match(/<table\b[\s\S]*?<\/table>/i);
+  const emailPreviewHtml = tableMatch ? tableMatch[0] : emailHtmlInlined;
   return `<!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${escapeHtml(meta.title)} — 발송</title>
-<link rel="stylesheet" href="/intelliCEN_newsletter/assets/site.css">
+<link rel="stylesheet" href="../../assets/site.css">
 </head><body>
 <div class="toolbar">
-  <a class="back" href="/intelliCEN_newsletter/">← 목록</a>
+  <a class="back" href="../../">← 목록</a>
   <button id="btn-copy-render">전체선택·복사</button>
   <button id="btn-copy-source">HTML 소스 복사</button>
   <span id="copy-msg" role="status" aria-live="polite"></span>
 </div>
-<div id="email-render" class="email-render">${emailHtmlInlined}</div>
+<div id="email-render" class="email-render">${emailPreviewHtml}</div>
 <script>
 const RAW = ${srcJson};
 const msg = document.getElementById('copy-msg');
@@ -540,8 +542,13 @@ document.getElementById('btn-copy-render').addEventListener('click', () => {
   const el = document.getElementById('email-render');
   const range = document.createRange(); range.selectNodeContents(el);
   const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
-  try { document.execCommand('copy'); flash('렌더 영역을 복사했습니다 — 메일에 붙여넣기'); }
-  catch { flash('복사 실패 — 수동으로 전체선택 후 복사하세요'); }
+  try {
+    const ok = document.execCommand('copy');
+    if (!ok) throw new Error('copy failed');
+    flash('렌더 영역을 복사했습니다 — 메일에 붙여넣기');
+  } catch {
+    flash('복사 실패 — 수동으로 전체선택 후 복사하세요');
+  }
 });
 </script>
 </body></html>`;
@@ -550,7 +557,7 @@ document.getElementById('btn-copy-render').addEventListener('click', () => {
 export function renderIndex(issues) {
   const cards = issues.map((it) => `
     <li class="card">
-      <a class="card-link" href="/intelliCEN_newsletter/${it.url}">
+      <a class="card-link" href="${escapeHtml(it.url)}">
         <div class="card-date">${escapeHtml(it.meta.date)}</div>
         <div class="card-title">${escapeHtml(it.meta.title)}</div>
         <div class="card-summary">${escapeHtml(it.meta.summary)}</div>
@@ -560,7 +567,7 @@ export function renderIndex(issues) {
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>intelliCEN PMS 뉴스레터</title>
-<link rel="stylesheet" href="/intelliCEN_newsletter/assets/site.css">
+<link rel="stylesheet" href="assets/site.css">
 </head><body>
 <header class="site-header"><h1>intelliCEN PMS 뉴스레터</h1></header>
 <main><ul class="card-list">${cards}</ul></main>
@@ -569,6 +576,8 @@ export function renderIndex(issues) {
 ```
 
 > 주의: 이메일 본문(`bodyHtml`)은 신뢰된 작성자의 Markdown 변환 결과이므로 `{{BODY}}` 는 escape 하지 않는다. 제목·날짜·링크 등 frontmatter 값은 escape 한다.
+>
+> **(최종 전체 리뷰 반영, 2026-09-04)**: 위 코드는 실제 구현과 일치하도록 갱신되었다 — ①`PAGES_BASE` 하드코딩 4곳 대신 root-relative 경로(`assets/site.css`, `../../assets/site.css`, `../../`, `it.url` 그대로) 사용(Global Constraint 「PAGES_BASE 상수 1곳」 위반 수정), ②`.replaceAll(placeholder, string)` → 함수 replacer로 교체(`$&` 등 `$`-패턴 치환 오염 방지), ③`document.execCommand('copy')` 의 boolean 반환값 분기 추가(실패해도 성공 메시지가 뜨던 결함 수정), ④`emailHtmlInlined` 에서 `<table>` 서브트리만 추출해 `#email-render` 에 넣음(완전한 html/head/body 문서가 `<div>` 안에 중첩되던 결함 수정 — 복사용 `rawEmailSource` 는 그대로 완전한 문서 유지).
 
 - [ ] **Step 5: Run test to verify it passes**
 

@@ -6,7 +6,7 @@ Markdown 으로 작성 → 빌드가 이메일용 HTML + 정적 사이트 생성
 
 1. `issues/YYYY-MM-volNN/index.md` 생성 (frontmatter: title/date/summary/links)
 2. 이미지는 같은 폴더 `images/` 에 넣고 `![alt](images/파일)` 로 참조
-3. 로컬 확인: `npm install` (최초 1회) → `npm run build` → `docs/` 를 브라우저로 열기
+3. 로컬 확인: `npm install` (최초 1회) → `npm run build` → `docs/index.html` 을 브라우저로 더블클릭해서 열기 (상대경로라 `file://` 로도 정상 동작)
 4. commit & push → GitHub Actions 가 자동 빌드·배포
 
 ## 발송
@@ -23,3 +23,4 @@ Markdown 으로 작성 → 빌드가 이메일용 HTML + 정적 사이트 생성
 
 - 저장소는 public 이므로 대외비·개인정보를 넣지 않는다.
 - push 인증은 Personal Access Token 사용 권장(비밀번호 커밋 금지).
+- `docs/` 는 매 빌드마다 전체 삭제 후 재생성되는 빌드 산출물 전용 폴더입니다 — 직접 편집하거나 여기에 문서를 두지 마세요.
