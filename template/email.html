@@ -1,0 +1,48 @@
+<!--
+============================================================
+파일명    : email.html
+기능      : 뉴스레터 이메일 래퍼(600px 테이블, juice 인라인화 대상 style)
+작성자    : 김용현(adminpms03) + Claude Code(claude-opus-4-8)
+작성일    : 2026-09-03
+============================================================
+-->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<style>
+  body { margin:0; padding:0; background:#f4f5f7; }
+  .wrap { width:100%; background:#f4f5f7; padding:24px 0; }
+  .container { width:600px; max-width:600px; margin:0 auto; background:#ffffff;
+    font-family: 'Malgun Gothic','맑은 고딕',Arial,sans-serif; color:#222222; }
+  .header { padding:24px 28px 8px; border-bottom:3px solid #0078D7; }
+  .brand { font-size:13px; color:#0078D7; font-weight:bold; letter-spacing:.5px; }
+  .title { font-size:22px; font-weight:bold; margin:6px 0 4px; }
+  .date { font-size:12px; color:#888888; }
+  .webview { font-size:12px; color:#0078D7; text-decoration:none; }
+  .body { padding:20px 28px; font-size:15px; line-height:1.7; }
+  .body img { max-width:100%; height:auto; }
+  .body h2 { font-size:18px; border-left:4px solid #0078D7; padding-left:10px; }
+  .body a { color:#0078D7; }
+  .links { padding:8px 28px 24px; }
+  .links a { display:inline-block; margin:4px 8px 4px 0; padding:8px 14px;
+    background:#0078D7; color:#ffffff; text-decoration:none; border-radius:4px; font-size:13px; }
+  .footer { padding:16px 28px; background:#fafafa; color:#999999; font-size:11px;
+    border-top:1px solid #eeeeee; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <table class="container" role="presentation" cellpadding="0" cellspacing="0" border="0">
+    <tr><td class="header">
+      <div class="brand">intelliCEN PMS</div>
+      <div class="title">{{TITLE}}</div>
+      <div class="date">{{DATE}} &nbsp;·&nbsp; <a class="webview" href="{{WEBVIEW_URL}}">웹에서 보기</a></div>
+    </td></tr>
+    <tr><td class="body">{{BODY}}</td></tr>
+    <tr><td class="links">{{LINKS}}</td></tr>
+    <tr><td class="footer">본 메일은 intelliCEN PMS 뉴스레터입니다. 이미지는 GitHub 에 보관되어 언제든 다시 볼 수 있습니다.</td></tr>
+  </table>
+</div>
+</body>
+</html>
