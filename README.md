@@ -1,11 +1,13 @@
-# intelliCEN PMS 뉴스레터
+# IntelliCEN PMS 뉴스레터
 
 Markdown 으로 작성 → 빌드가 이메일용 HTML + 정적 사이트 생성 → GitHub Pages 호스팅 → 직접 발송.
 
-## 새 뉴스레터 작성
+이 저장소는 **발송·영구 호스팅 전용**이다. 콘텐츠 작성(초안·스크린샷)은 `pms_v2.4/docs/newsletter/`에서 한다 — 배경과 규격은 그 프로젝트의 `docs/199_뉴스레터_제작관리_체계.md` 참고.
 
-1. `issues/YYYY-MM-volNN/index.md` 생성 (frontmatter: title/date/summary/links)
-2. 이미지는 같은 폴더 `images/` 에 넣고 `![alt](images/파일)` 로 참조
+## 새 뉴스레터 인계 받기
+
+1. `pms_v2.4/docs/newsletter/drafts/<slug>/`에서 초안 작성 완료
+2. `pms_v2.4`에서 `node docs/newsletter/scripts/publish-to-github.cjs <slug>` 실행 → 이 저장소의 `issues/<slug>/`로 복사됨
 3. 로컬 확인: `npm install` (최초 1회) → `npm run build` → `docs/index.html` 을 브라우저로 더블클릭해서 열기 (상대경로라 `file://` 로도 정상 동작)
 4. commit & push → GitHub Actions 가 자동 빌드·배포
 

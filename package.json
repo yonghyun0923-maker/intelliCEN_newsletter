@@ -1,7 +1,7 @@
 {
   "name": "intellicen-newsletter",
   "version": "1.0.0",
-  "description": "intelliCEN PMS 뉴스레터 관리 시스템",
+  "description": "IntelliCEN PMS 뉴스레터 관리 시스템",
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",

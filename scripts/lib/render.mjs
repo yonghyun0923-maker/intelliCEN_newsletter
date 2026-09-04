@@ -15,13 +15,30 @@ function renderLinks(links) {
   return links.map((l) => `<a href="${escapeHtml(l.url)}">${escapeHtml(l.label)}</a>`).join('');
 }
 
-export function renderEmail({ meta, bodyHtml, issueUrl, template }) {
+// 본문의 최상위 <h2> 섹션마다 01/02/03 번호를 매겨 .block 구조로 감싼다.
+// (작성자는 그냥 `## 제목`만 쓰면 되고, 번호는 빌드가 자동으로 매긴다)
+function wrapNumberedBody(bodyHtml) {
+  const chunks = bodyHtml.split(/(?=<h2\b)/i);
+  let n = 0;
+  return chunks.map((chunk) => {
+    const m = chunk.match(/^<h2[^>]*>([\s\S]*?)<\/h2>([\s\S]*)$/i);
+    if (!m) return chunk; // 첫 h2 이전의 프리앰블 — 그대로 통과
+    n += 1;
+    const num = String(n).padStart(2, '0');
+    const [, titleHtml, restHtml] = m;
+    return `<div class="block"><div class="num">${num}</div><div class="btitle">${titleHtml}</div>${restHtml}</div>`;
+  }).join('');
+}
+
+export function renderEmail({ meta, bodyHtml, issueUrl, template, logoUrl = '', volLabel = '' }) {
   return template
     .replaceAll('{{TITLE}}', () => escapeHtml(meta.title))
     .replaceAll('{{DATE}}', () => escapeHtml(meta.date))
     .replaceAll('{{WEBVIEW_URL}}', () => escapeHtml(issueUrl))
-    .replaceAll('{{BODY}}', () => bodyHtml)
-    .replaceAll('{{LINKS}}', () => renderLinks(meta.links));
+    .replaceAll('{{BODY}}', () => wrapNumberedBody(bodyHtml))
+    .replaceAll('{{LINKS}}', () => renderLinks(meta.links))
+    .replaceAll('{{LOGO_URL}}', () => escapeHtml(logoUrl))
+    .replaceAll('{{VOL_LABEL}}', () => escapeHtml(volLabel));
 }
 
 export function renderSitePage({ emailHtmlInlined, meta, rawEmailSource }) {
@@ -77,10 +94,18 @@ export function renderIndex(issues) {
   return `<!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>intelliCEN PMS 뉴스레터</title>
+<title>IntelliCEN PMS 뉴스레터</title>
 <link rel="stylesheet" href="assets/site.css">
 </head><body>
-<header class="site-header"><h1>intelliCEN PMS 뉴스레터</h1></header>
+<header class="site-header">
+  <div class="lockup">
+    <span class="cibadge"><img src="assets/itcen-logo.png" alt="ITCEN"></span>
+    <span class="lockdiv"></span>
+    <span class="lockpms">PMS</span>
+  </div>
+  <h1>뉴스레터</h1>
+  <p>매주, 새로 추가된 기능 하나씩 전해드립니다</p>
+</header>
 <main><ul class="card-list">${cards}</ul></main>
 </body></html>`;
 }

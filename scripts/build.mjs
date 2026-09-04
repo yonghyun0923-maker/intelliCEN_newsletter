@@ -32,6 +32,7 @@ function build() {
   if (existsSync(DOCS_DIR)) rmSync(DOCS_DIR, { recursive: true, force: true });
   mkdirSync(join(DOCS_DIR, 'assets'), { recursive: true });
   cpSync(join(ROOT, 'template', 'site.css'), join(DOCS_DIR, 'assets', 'site.css'));
+  cpSync(join(ROOT, 'template', 'assets'), join(DOCS_DIR, 'assets'), { recursive: true });
   writeFileSync(join(DOCS_DIR, '.nojekyll'), '');
 
   const slugs = readdirSync(ISSUES_DIR).filter((n) => statSync(join(ISSUES_DIR, n)).isDirectory());
@@ -50,7 +51,10 @@ function build() {
       const baseUrl = `${PAGES_BASE}/issues/${slug}`;
 
       const bodyHtml = rewriteImageUrls(md.render(body), baseUrl);
-      const rawEmail = renderEmail({ meta, bodyHtml, issueUrl, template: TEMPLATE });
+      const logoUrl = `${PAGES_BASE}/assets/itcen-logo.png`;
+      const volMatch = slug.match(/vol0*(\d+)/i);
+      const volLabel = volMatch ? `Vol.${volMatch[1]}` : '';
+      const rawEmail = renderEmail({ meta, bodyHtml, issueUrl, template: TEMPLATE, logoUrl, volLabel });
       const emailInlined = juice(rawEmail);
 
       const outDir = join(DOCS_DIR, 'issues', slug);
