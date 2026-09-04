@@ -17,10 +17,14 @@ Markdown 으로 작성 → 빌드가 이메일용 HTML + 정적 사이트 생성
 
 ## GitHub Pages 최초 설정 (1회)
 
-저장소 Settings → Pages → Source = `main` 브랜치 `/docs` 폴더 → Save
+저장소 Settings → Pages → Source = `master` 브랜치 `/docs` 폴더 → Save
 
 ## 주의
 
 - 저장소는 public 이므로 대외비·개인정보를 넣지 않는다.
 - push 인증은 Personal Access Token 사용 권장(비밀번호 커밋 금지).
 - `docs/` 는 매 빌드마다 전체 삭제 후 재생성되는 빌드 산출물 전용 폴더입니다 — 직접 편집하거나 여기에 문서를 두지 마세요.
+
+## 시스템 문서 · 정정 이력
+
+동작 원리, 저장소 구조, 배포 현황과 구축 중 발견·수정한 문제들의 정정 이력: [뉴스레터 시스템 운영기](https://claude.ai/code/artifact/61a2959c-a191-44e0-8119-591c7b8d8801)
