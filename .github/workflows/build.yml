@@ -1,7 +1,7 @@
 name: build-newsletter
 on:
   push:
-    branches: [main]
+    branches: [master]
     paths: ['issues/**', 'template/**', 'scripts/**', 'package.json', 'package-lock.json']
   workflow_dispatch:
 
