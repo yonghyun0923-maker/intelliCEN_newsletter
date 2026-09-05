@@ -22,9 +22,12 @@ function renderLinks(links) {
 // 본문의 최상위 <h2> 섹션마다 01/02/03 번호를 매겨 .block 구조로 감싼다.
 // (작성자는 그냥 `## 제목`만 쓰면 되고, 번호는 빌드가 자동으로 매긴다)
 function wrapNumberedBody(bodyHtml) {
-  // markdown 표의 <th> 는 CSS 배경색만으로는 Outlook 복사·붙여넣기에서 살아남지
-  // 않는다 — bgcolor 속성을 직접 박아준다.
-  bodyHtml = bodyHtml.replace(/<th(?=[ >])/gi, '<th bgcolor="#f7f9fd"');
+  // markdown 표의 배경색·테두리는 CSS 만으로는 Outlook 복사·붙여넣기에서
+  // 살아남지 않는다 — bgcolor/border 속성을 직접 박아준다.
+  bodyHtml = bodyHtml
+    .replace(/<table>/gi, '<table border="1" bordercolor="#e7ebf2" cellspacing="0" cellpadding="0" style="border-collapse:collapse;width:100%;">')
+    .replace(/<th(?=[ >])/gi, '<th bgcolor="#f7f9fd" bordercolor="#e7ebf2"')
+    .replace(/<td(?=[ >])/gi, '<td bordercolor="#e7ebf2"');
   const chunks = bodyHtml.split(/(?=<h2\b)/i);
   let n = 0;
   return chunks.map((chunk) => {
