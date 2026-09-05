@@ -54,7 +54,7 @@ main{ max-width:760px; margin:-32px auto 0; padding:0 20px 72px; position:relati
 #btn-copy-source:hover{ opacity:.85; }
 .toolbar #copy-msg{ color:#1f8a4c; font-size:13px; font-weight:700; }
 
-.email-render{ max-width:860px; margin:32px auto 64px; border-radius:14px; overflow:hidden;
+.email-render{ max-width:940px; margin:32px auto 64px; border-radius:14px; overflow:hidden;
   box-shadow:0 1px 3px rgba(20,27,45,.06), 0 30px 56px -30px rgba(20,60,140,.4); }
 
 @media (prefers-reduced-motion: reduce){
