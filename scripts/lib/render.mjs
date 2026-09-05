@@ -43,7 +43,10 @@ export function renderEmail({ meta, bodyHtml, issueUrl, template, logoUrl = '', 
 
 export function renderSitePage({ emailHtmlInlined, meta, rawEmailSource }) {
   const srcJson = JSON.stringify(rawEmailSource);
-  const tableMatch = emailHtmlInlined.match(/<table\b[\s\S]*?<\/table>/i);
+  // 그리디 매칭: 본문에 markdown 표(중첩 <table>)가 있어도 바깥 컨테이너 표의
+  // "마지막" </table> 까지 온전히 잡는다 — 논-그리디였을 때 본문 표의 첫 </table>
+  // 에서 잘려 그 아래 전체(이미지·섹션·푸터)가 미리보기에서 통째로 사라지는 버그가 있었다.
+  const tableMatch = emailHtmlInlined.match(/<table\b[\s\S]*<\/table>/i);
   const emailPreviewHtml = tableMatch ? tableMatch[0] : emailHtmlInlined;
   return `<!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
