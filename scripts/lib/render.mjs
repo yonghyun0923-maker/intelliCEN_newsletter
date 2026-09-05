@@ -12,12 +12,19 @@ function escapeHtml(s) {
 }
 
 function renderLinks(links) {
-  return links.map((l) => `<a href="${escapeHtml(l.url)}">${escapeHtml(l.label)}</a>`).join('');
+  // Outlook 은 <a> 의 CSS background 를 거의 못 읽는다 — bgcolor 속성을 가진
+  // <td> 로 감싼 "불릿프루프 버튼" 형태로 만들어야 배경색이 살아남는다.
+  return links.map((l) => `<table class="linkbtn" role="presentation" cellpadding="0" cellspacing="0" border="0" style="display:inline-table;">
+<tr><td bgcolor="#2c63b5"><a href="${escapeHtml(l.url)}">${escapeHtml(l.label)}</a></td></tr>
+</table>`).join(' ');
 }
 
 // 본문의 최상위 <h2> 섹션마다 01/02/03 번호를 매겨 .block 구조로 감싼다.
 // (작성자는 그냥 `## 제목`만 쓰면 되고, 번호는 빌드가 자동으로 매긴다)
 function wrapNumberedBody(bodyHtml) {
+  // markdown 표의 <th> 는 CSS 배경색만으로는 Outlook 복사·붙여넣기에서 살아남지
+  // 않는다 — bgcolor 속성을 직접 박아준다.
+  bodyHtml = bodyHtml.replace(/<th(?=[ >])/gi, '<th bgcolor="#f7f9fd"');
   const chunks = bodyHtml.split(/(?=<h2\b)/i);
   let n = 0;
   return chunks.map((chunk) => {

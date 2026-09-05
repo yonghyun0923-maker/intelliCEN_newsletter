@@ -54,9 +54,9 @@
   .body blockquote strong { color:#4a3d1a; }
 
   .links { padding:6px 36px 30px; }
-  .links a { display:inline-block; margin:4px 8px 4px 0; padding:11px 24px;
-    background:#2c63b5; color:#ffffff !important; text-decoration:none; border-radius:8px;
-    font-size:13.5px; font-weight:bold; }
+  .linkbtn { border-radius:8px; }
+  .linkbtn td { padding:11px 24px; }
+  .linkbtn a { color:#ffffff !important; text-decoration:none; font-size:13.5px; font-weight:bold; }
 
   .footer { padding:26px 36px 30px; text-align:center; background:#f7f9fd; color:#697386;
     font-size:11.5px; border-top:1px solid #e7ebf2; }
@@ -68,14 +68,14 @@
 <body>
 <div class="wrap">
   <table class="container" role="presentation" cellpadding="0" cellspacing="0" border="0" width="600">
-    <tr><td class="mast">
+    <tr><td class="mast" bgcolor="#2c63b5">
       <span class="cibadge"><img src="{{LOGO_URL}}" alt="ITCEN" height="18"></span><span class="lockdiv">&nbsp;</span><span class="lockpms">PMS</span><span class="volchip">{{VOL_LABEL}}</span>
       <div class="title">{{TITLE}}</div>
       <div class="date">{{DATE}} &nbsp;·&nbsp; <a class="webview" href="{{WEBVIEW_URL}}">웹에서 보기 →</a></div>
     </td></tr>
     <tr><td class="body">{{BODY}}</td></tr>
     <tr><td class="links">{{LINKS}}</td></tr>
-    <tr><td class="footer">
+    <tr><td class="footer" bgcolor="#f7f9fd">
       <span class="fdot">&nbsp;</span>
       <b>IntelliCEN PMS</b> 뉴스레터입니다. 이미지는 GitHub 에 보관되어 언제든 다시 볼 수 있습니다.
     </td></tr>
